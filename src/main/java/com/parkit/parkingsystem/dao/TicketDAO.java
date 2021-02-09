@@ -36,8 +36,8 @@ public class TicketDAO {
             logger.error("Error fetching next available slot",ex);
         }finally {
             dataBaseConfig.closeConnection(con);
-            return false;
         }
+        return false;
     }
 
     public Ticket getTicket(String vehicleRegNumber) {
@@ -82,6 +82,34 @@ public class TicketDAO {
         }catch (Exception ex){
             logger.error("Error saving ticket info",ex);
         }finally {
+            dataBaseConfig.closeConnection(con);
+        }
+        return false;
+    }
+// Add recurring customer check
+    public boolean isAlreadyClient(String vehicleRegNumber) {
+        Connection con = null;
+        PreparedStatement ps = null; // Initialisation
+        ResultSet rs = null; // Initialisation
+        boolean count = false;
+        try {
+            con = dataBaseConfig.getConnection();
+            // First: verification of type of user : recurring or not ?
+            ps = con.prepareStatement(DBConstants.COUNT_TICKET);
+            ps.setString(1, vehicleRegNumber);
+            rs = ps.executeQuery();
+
+//            True, if the DB gets the vehicle's tickets
+            if(rs.next()){
+                count = rs.getBoolean(1);
+                System.out.println(count);
+            }
+            return count;
+        }catch (Exception ex){
+            logger.error("Error to verify if it's a recurring user",ex);
+        }finally {
+            dataBaseConfig.closeResultSet(rs);
+            dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
         }
         return false;
