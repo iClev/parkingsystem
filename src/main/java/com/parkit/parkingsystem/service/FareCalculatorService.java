@@ -2,6 +2,8 @@ package com.parkit.parkingsystem.service;
 
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
+import com.parkit.parkingsystem.dao.TicketDAO;
+
 
 public class FareCalculatorService {
 
@@ -36,9 +38,9 @@ public class FareCalculatorService {
         }
     }
     //5% discount for recurring users
-    public void calculateFare(Ticket ticket, double discount) {
-        discount = 1;
-        if (ticket.getRecurringVehicle()) {
+    public void calculateFare(Ticket ticket, TicketDAO ticketDAO) {
+        double discount =1;
+        if (ticketDAO.isAlreadyClient(ticket.getVehicleRegNumber())) {
             discount = Fare.REDUCTION_OF_RECURRING_USERS;
         }
         switch (ticket.getParkingSpot().getParkingType()){

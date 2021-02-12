@@ -58,6 +58,9 @@ public class TicketDAO {
                 ticket.setPrice(rs.getDouble(3));
                 ticket.setInTime(rs.getTimestamp(4));
                 ticket.setOutTime(rs.getTimestamp(5));
+
+//                Define and change the recurrence status of a customer
+                ticket.setRecurringVehicle(isAlreadyClient(vehicleRegNumber));
             }
             dataBaseConfig.closeResultSet(rs);
             dataBaseConfig.closePreparedStatement(ps);
@@ -104,7 +107,7 @@ public class TicketDAO {
                 count = rs.getBoolean(1);
                 System.out.println(count);
             }
-            return count;
+
         }catch (Exception ex){
             logger.error("Error to verify if it's a recurring user",ex);
         }finally {
@@ -112,6 +115,6 @@ public class TicketDAO {
             dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
         }
-        return false;
+        return count;
     }
 }
