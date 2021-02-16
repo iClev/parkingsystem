@@ -94,7 +94,7 @@ public class TicketDAO {
         Connection con = null;
         PreparedStatement ps = null; // Initialisation
         ResultSet rs = null; // Initialisation
-        boolean count = false;
+        int count =0;
         try {
             con = dataBaseConfig.getConnection();
             // First: verification of type of user : recurring or not ?
@@ -104,7 +104,7 @@ public class TicketDAO {
 
 //            True, if the DB gets the vehicle's tickets
             if(rs.next()){
-                count = rs.getBoolean(1);
+               count = rs.getInt(1);
                 System.out.println(count);
             }
 
@@ -115,6 +115,8 @@ public class TicketDAO {
             dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
         }
-        return count;
+        if(count>0){
+            return true;
+        } else { return false;}
     }
 }
