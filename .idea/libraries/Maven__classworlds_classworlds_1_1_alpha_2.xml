@@ -2,7 +2,6 @@
   <library name="Maven: classworlds:classworlds:1.1-alpha-2">
     <CLASSES>
       <root url="jar://$MAVEN_REPOSITORY$/classworlds/classworlds/1.1-alpha-2/classworlds-1.1-alpha-2.jar!/" />
-      <root url="file://$MAVEN_REPOSITORY$/junit/junit/4.13" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$MAVEN_REPOSITORY$/classworlds/classworlds/1.1-alpha-2/classworlds-1.1-alpha-2-javadoc.jar!/" />
@@ -10,9 +9,5 @@
     <SOURCES>
       <root url="jar://$MAVEN_REPOSITORY$/classworlds/classworlds/1.1-alpha-2/classworlds-1.1-alpha-2-sources.jar!/" />
     </SOURCES>
-    <excluded>
-      <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.13/junit-4.13.jar!/" />
-    </excluded>
-    <jarDirectory url="file://$MAVEN_REPOSITORY$/junit/junit/4.13" recursive="false" />
   </library>
 </component>
