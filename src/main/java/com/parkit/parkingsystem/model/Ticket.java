@@ -1,6 +1,6 @@
 package com.parkit.parkingsystem.model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 
 public class Ticket {
@@ -8,8 +8,8 @@ public class Ticket {
     private ParkingSpot parkingSpot;
     private String vehicleRegNumber;
     private double price;
-    private LocalDateTime inTime;
-    private LocalDateTime outTime;
+    private Date inTime;
+    private Date outTime;
 
     boolean recurringVehicle;
 
@@ -46,22 +46,23 @@ public class Ticket {
         this.price = price;
     }
 
-    public LocalDateTime getInTime() {
+    public Date getInTime() {
         
         return inTime;
     }
 
-    public LocalDateTime setInTime(LocalDateTime inTime) {
-        return this.inTime = inTime;
+    public void setInTime(Date inTime) {
+        
+        this.inTime = inTime;
     }
 
-    public LocalDateTime getOutTime() {
-        
+    public Date getOutTime() {
         return outTime;
     }
 
-    public LocalDateTime setOutTime(LocalDateTime outTime) {
-        return this.outTime = outTime;
+    public void  setOutTime(Date outTime) {
+        
+        this.outTime = outTime;
     }
 
     public boolean getRecurringVehicle() { return recurringVehicle; }

@@ -9,20 +9,22 @@ import com.parkit.parkingsystem.util.InputReaderUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class ParkingService {
 
     private static final Logger logger = LogManager.getLogger("ParkingService");
     private static final int DAYS_FOR_RECURRENCE=1;
     private static FareCalculatorService fareCalculatorService = new FareCalculatorService();
+    
     private InputReaderUtil inputReaderUtil;
     private ParkingSpotDAO parkingSpotDAO;
     private TicketDAO ticketDAO;
-    private int count;
-    private double disCount;
     
-
+    private int count;
+    public double disCount;
+    boolean recurring;
+ 
     public ParkingService(InputReaderUtil inputReaderUtil, ParkingSpotDAO parkingSpotDAO, TicketDAO ticketDAO) {
         this.inputReaderUtil = inputReaderUtil;
         this.parkingSpotDAO = parkingSpotDAO;
@@ -36,8 +38,8 @@ public class ParkingService {
                 String vehicleRegNumber = getVehichleRegNumber();
                 parkingSpot.setAvailable(false);
                 parkingSpotDAO.updateParking(parkingSpot);//allot this parking space and mark it's availability as false
-                
-                LocalDateTime inTime = LocalDateTime.now();
+    
+                Date inTime = new Date();
                 Ticket ticket = new Ticket();
                 ticket.setParkingSpot(parkingSpot);
                 ticket.setVehicleRegNumber(vehicleRegNumber);
@@ -74,7 +76,7 @@ public class ParkingService {
             if (parkingNumber > 0) {
                 parkingSpot = new ParkingSpot(parkingNumber, parkingType, true);
             } else {
-                throw new Exception("Error fetching parking number from DB. Parking slots might be full");
+                throw new IllegalArgumentException("Error fetching parking number from DB. Parking slots might be full");
             }
         } catch (IllegalArgumentException ie) {
             logger.error("Error parsing user input for type of vehicle", ie);
@@ -90,27 +92,23 @@ public class ParkingService {
         System.out.println("2 BIKE");
         int input = inputReaderUtil.readSelection();
         switch (input) {
-            case 1: {
+            case 1:
                 return ParkingType.CAR;
-            }
-            case 2: {
+            case 2:
                 return ParkingType.BIKE;
-            }
-            default: {
-                System.out.println("Incorrect input provided");
-                throw new IllegalArgumentException("Entered input is invalid");
-            }
+            default: System.out.println("Incorrect input provided");
+            throw new IllegalArgumentException("Entered input is invalid");
         }
     }
-    
     public void processExitingVehicle() {
         try {
             String vehicleRegNumber = getVehichleRegNumber();
             Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
-            LocalDateTime outTime = LocalDateTime.now();
+            Date outTime = new Date();
             ticket.setOutTime(outTime);
+            
             count = ticketDAO.isAlreadyClient(vehicleRegNumber); //Added
-            fareCalculatorService.calculateFare(ticket, false);
+            fareCalculatorService.calculateFare(ticket);
             if (ticketDAO.updateTicket(ticket)) {
                 ParkingSpot parkingSpot = ticket.getParkingSpot();
                 parkingSpot.setAvailable(true);
@@ -133,7 +131,6 @@ public class ParkingService {
             logger.error("Unable to process exiting vehicle", e);
         }
     }
-    
     public void setFareCalculatorService(FareCalculatorService fareCalculatorService) {
         this.fareCalculatorService = fareCalculatorService;
     }

@@ -11,13 +11,14 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.util.Date;
 
 public class TicketDAO {
 
     private static final Logger logger = LogManager.getLogger("TicketDAO");
-    private LocalDateTime inTime = null;
-    private LocalDateTime outTime = null;
+    private Date inTime = null;
+    private Date outTime = null;
 
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
@@ -31,11 +32,9 @@ public class TicketDAO {
             ps.setInt(1,ticket.getParkingSpot().getId());
             ps.setString(2, ticket.getVehicleRegNumber());
             ps.setDouble(3, ticket.getPrice());
-            
-            inTime=ticket.getInTime();
-            ps.setObject(4, inTime.getMinute());
-            outTime=ticket.getOutTime();
-            ps.setObject(5, outTime.getMinute());
+    
+            ps.setTimestamp(4, new Timestamp(ticket.getInTime().getTime()));
+            ps.setTimestamp(5, (ticket.getOutTime() == null) ? null : (new Timestamp(ticket.getOutTime().getTime())));
             return ps.execute();
         }catch (Exception ex){
             logger.error("Error fetching next available slot",ex);
@@ -61,12 +60,8 @@ public class TicketDAO {
                 ticket.setId(rs.getInt(2));
                 ticket.setVehicleRegNumber(vehicleRegNumber);
                 ticket.setPrice(rs.getDouble(3));
-                
-                inTime = ticket.setInTime(rs.getTimestamp(4).toLocalDateTime());
-                java.sql.Timestamp.valueOf(inTime).getTime();
-    
-                outTime = ticket.setOutTime(rs.getTimestamp(4).toLocalDateTime());
-                java.sql.Timestamp.valueOf(outTime).getTime();
+                ticket.setInTime(rs.getTimestamp(4));
+                ticket.setOutTime(rs.getTimestamp(5));
             }
             dataBaseConfig.closeResultSet(rs);
             dataBaseConfig.closePreparedStatement(ps);
@@ -84,8 +79,7 @@ public class TicketDAO {
             con = dataBaseConfig.getConnection();
             PreparedStatement ps = con.prepareStatement(DBConstants.UPDATE_TICKET);
             ps.setDouble(1, ticket.getPrice());
-            outTime = ticket.getOutTime();
-            ps.setObject(2, outTime.getMinute());
+            ps.setTimestamp(2, new Timestamp(ticket.getOutTime().getTime()));
             ps.setInt(3,ticket.getId());
             ps.execute();
             return true;
