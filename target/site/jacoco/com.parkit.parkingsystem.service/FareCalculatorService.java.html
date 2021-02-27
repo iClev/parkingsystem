@@ -4,57 +4,61 @@ import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.dao.TicketDAO;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 
-<span class="fc" id="L8">public class FareCalculatorService {</span>
 
-    private long duration;
+<span class="fc" id="L11">public class FareCalculatorService {</span>
     boolean recurring;
+    private double duration;
 
-    public void calculateFare(Ticket ticket, boolean recurring){
-<span class="pc bpc" id="L14" title="1 of 4 branches missed.">        if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){</span>
-<span class="fc" id="L15">            throw new IllegalArgumentException(&quot;Out time provided is incorrect:&quot;+ticket.getOutTime().toString());</span>
+    public double calculateFare(Ticket ticket, boolean recurring) {
+<span class="pc bpc" id="L16" title="1 of 4 branches missed.">        if ((ticket.getOutTime() == null) || (ticket.getOutTime().isBefore(ticket.getInTime()))) {</span>
+<span class="fc" id="L17">            throw new IllegalArgumentException(&quot;Out time provided is incorrect:&quot; + ticket.getOutTime().toString());</span>
         }
-
-<span class="fc" id="L18">        long inHour = ticket.getInTime().getTime();</span>
-<span class="fc" id="L19">        long outHour = ticket.getOutTime().getTime();</span>
-
+<span class="fc" id="L19">        LocalDateTime inHour = ticket.getInTime();</span>
+<span class="fc" id="L20">        LocalDateTime outHour = ticket.getOutTime();</span>
         //TODO: Some tests are failing here. Need to check if this logic is correct
-
-<span class="fc" id="L23">        long duration = (outHour - inHour)/1000/60/60; // Free for the first half hours</span>
-<span class="fc bfc" id="L24" title="All 2 branches covered.">        if(duration &lt; 0.5) {</span>
-<span class="fc" id="L25">            duration = 0;</span>
-<span class="fc" id="L26">            ticket.setPrice(0);</span>
-<span class="fc" id="L27">            return;</span>
-        }
-<span class="pc bpc" id="L29" title="1 of 3 branches missed.">        switch (ticket.getParkingSpot().getParkingType()){</span>
-            case CAR: {
-<span class="fc" id="L31">                ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);</span>
-<span class="fc" id="L32">                break;</span>
+        
+<span class="fc" id="L23">        Duration durationBetweenInTimeAndOutTime = Duration.between(inHour, outHour);</span>
+<span class="fc" id="L24">        double durationMin = durationBetweenInTimeAndOutTime.toMinutes();</span>
+<span class="fc" id="L25">        double duration = durationMin / 60; // Free for the first half hours</span>
+    
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        if (duration &gt; 0.5) {</span>
+<span class="pc bpc" id="L28" title="1 of 3 branches missed.">            switch (ticket.getParkingSpot().getParkingType()) {</span>
+                case CAR: {
+<span class="fc" id="L30">                    ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);</span>
+<span class="fc" id="L31">                    break;</span>
+                }
+                case BIKE: {
+<span class="fc" id="L34">                    ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);</span>
+<span class="fc" id="L35">                    break;</span>
+                }
+<span class="nc" id="L37">                default: throw new IllegalArgumentException(&quot;Unkown Parking Type&quot;);</span>
             }
-            case BIKE: {
-<span class="fc" id="L35">                ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);</span>
-<span class="fc" id="L36">                break;</span>
-            }
-<span class="nc" id="L38">            default: throw new IllegalArgumentException(&quot;Unkown Parking Type&quot;);</span>
+        } else {
+<span class="nc" id="L40">            ticket.setPrice(0);</span>
         }
-<span class="fc" id="L40">    }</span>
-    //5% discount for recurring users
-    public void calculateFare(Ticket ticket,TicketDAO ticketDAO) {
-<span class="nc" id="L43">        double discount =1;</span>
-<span class="nc bnc" id="L44" title="All 2 branches missed.">        if (ticketDAO.isAlreadyClient(ticket.getVehicleRegNumber())) {</span>
-<span class="nc" id="L45">            discount = Fare.REDUCTION_OF_RECURRING_USERS;</span>
-        }
-<span class="nc bnc" id="L47" title="All 3 branches missed.">        switch (ticket.getParkingSpot().getParkingType()){</span>
-            case CAR: {
-<span class="nc" id="L49">                ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR * discount);</span>
-<span class="nc" id="L50">                break;</span>
+<span class="fc" id="L42">        return duration;</span>
+        
+    }
+    
+   /* public void calculateFare(Ticket ticket) {
+        double disCount =1;
+        if (ticketDAO.isAlreadyClient(ticket.getVehicleRegNumber())) {
+            disCount = Fare.REDUCTION_OF_RECURRING_USERS;
+            switch (ticket.getParkingSpot().getParkingType()) {
+                case CAR: {
+                    ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR * disCount);
+                    break;
+                }
+                case BIKE: {
+                    ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR * disCount);
+                    break;
+                }
+                default: throw new IllegalArgumentException(&quot;Unkown Parking Type&quot;);
             }
-            case BIKE: {
-<span class="nc" id="L53">                ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR * discount);</span>
-<span class="nc" id="L54">                break;</span>
-            }
-<span class="nc" id="L56">            default: throw new IllegalArgumentException(&quot;Unkown Parking Type&quot;);</span>
         }
-<span class="nc" id="L58">    }</span>
+    }*/
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -22,8 +22,6 @@ public class ParkingDataBaseIT {
     private static ParkingSpotDAO parkingSpotDAO;
     private static TicketDAO ticketDAO;
     private static DataBasePrepareService dataBasePrepareService;
-    private ParkingService parkingService;
-    private static final String  VEHICLE_REGISTRATION_NUMBER = "ABCDEF";
 
     @Mock
     private static InputReaderUtil inputReaderUtil;
@@ -39,10 +37,9 @@ public class ParkingDataBaseIT {
 
     @BeforeEach
     private void setUpPerTest() throws Exception {
-//        when(inputReaderUtil.readSelection()).thenReturn(1);
-        when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn(VEHICLE_REGISTRATION_NUMBER);
+        when(inputReaderUtil.readSelection()).thenReturn(1);
+        when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
         dataBasePrepareService.clearDataBaseEntries();
-         parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
     }
 
     @AfterAll

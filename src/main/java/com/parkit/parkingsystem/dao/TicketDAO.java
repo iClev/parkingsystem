@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class TicketDAO {
@@ -63,14 +62,11 @@ public class TicketDAO {
                 ticket.setVehicleRegNumber(vehicleRegNumber);
                 ticket.setPrice(rs.getDouble(3));
                 
-                inTime = ticket.getInTime();
+                inTime = ticket.setInTime(rs.getTimestamp(4).toLocalDateTime());
                 java.sql.Timestamp.valueOf(inTime).getTime();
     
-                outTime = ticket.getOutTime();
+                outTime = ticket.setOutTime(rs.getTimestamp(4).toLocalDateTime());
                 java.sql.Timestamp.valueOf(outTime).getTime();
-
-//                Define and change the recurrence status of a customer
-                ticket.setRecurringVehicle(isAlreadyClient(vehicleRegNumber));
             }
             dataBaseConfig.closeResultSet(rs);
             dataBaseConfig.closePreparedStatement(ps);
@@ -101,7 +97,7 @@ public class TicketDAO {
         return false;
     }
 // Add recurring customer check
-    public boolean isAlreadyClient(String vehicleRegNumber) {
+    public int isAlreadyClient(String vehicleRegNumber) {
         Connection con = null;
         PreparedStatement ps = null; // Initialisation
         ResultSet rs = null; // Initialisation
@@ -116,8 +112,8 @@ public class TicketDAO {
             rs = ps.executeQuery();
 
 //            True, if the DB gets the vehicle's tickets
-            if(rs.next()){
-               count = rs.getInt(1);
+            if(rs.next()) {
+                count = rs.getInt(1);
                 System.out.println(count);
             }
 
@@ -128,12 +124,7 @@ public class TicketDAO {
             dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
         }
-        if(count>0){
-          recurring= true;
-          return true;
-        } else {
-            return recurring;
-        }
+        return count;
     }
     
 }
