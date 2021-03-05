@@ -7,6 +7,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class InteractiveShell {
+    private InteractiveShell(){
+        
+    }
 
     private static final Logger logger = LogManager.getLogger("InteractiveShell");
 
@@ -24,19 +27,13 @@ public class InteractiveShell {
             loadMenu();
             int option = inputReaderUtil.readSelection();
             switch(option){
-                case 1: {
-                    parkingService.processIncomingVehicle();
+                case 1: parkingService.processIncomingVehicle();
                     break;
-                }
-                case 2: {
-                    parkingService.processExitingVehicle();
+                case 2: parkingService.processExitingVehicle();
                     break;
-                }
-                case 3: {
-                    System.out.println("Exiting from the system!");
+                case 3: System.out.println("Exiting from the system!");
                     continueApp = false;
                     break;
-                }
                 default: System.out.println("Unsupported option. Please enter a number corresponding to the provided menu");
             }
         }
@@ -48,5 +45,4 @@ public class InteractiveShell {
         System.out.println("2 Vehicle Exiting - Generate Ticket Price");
         System.out.println("3 Shutdown System");
     }
-
 }

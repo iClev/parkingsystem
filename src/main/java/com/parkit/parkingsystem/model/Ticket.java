@@ -4,68 +4,58 @@ import java.util.Date;
 
 
 public class Ticket {
-    private int id;
-    private ParkingSpot parkingSpot;
-    private String vehicleRegNumber;
-    private double price;
-    private Date inTime;
-    private Date outTime;
+private int id;
+private ParkingSpot parkingSpot;
+private String vehicleRegNumber;
+private double price;
+private Date inTime;
+private Date outTime;
 
-    boolean recurringVehicle;
+public int getId() {
+    return id;
+}
 
+public void setId(int id) {
+    this.id = id;
+}
 
-    public int getId() {
-        return id;
-    }
+public ParkingSpot getParkingSpot() {
+    return parkingSpot;
+}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+public void setParkingSpot(ParkingSpot parkingSpot) {
+    this.parkingSpot = parkingSpot;
+}
 
-    public ParkingSpot getParkingSpot() {
-        return parkingSpot;
-    }
+public String getVehicleRegNumber() {
+    return vehicleRegNumber;
+}
 
-    public void setParkingSpot(ParkingSpot parkingSpot) {
-        this.parkingSpot = parkingSpot;
-    }
+public void setVehicleRegNumber(String vehicleRegNumber) {
+    this.vehicleRegNumber = vehicleRegNumber;
+}
 
-    public String getVehicleRegNumber() {
-        return vehicleRegNumber;
-    }
+public double getPrice() {
+    return price;
+}
 
-    public void setVehicleRegNumber(String vehicleRegNumber) {
-        this.vehicleRegNumber = vehicleRegNumber;
-    }
+public void setPrice(double price) {
+    this.price = price;
+}
 
-    public double getPrice() {
-        return price;
-    }
+public Date getInTime() {
+    return inTime = inTime == null ? null : (Date) inTime.clone();
+}
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
+public void setInTime(Date inTime) {
+    this.inTime = inTime == null ? null : (Date) inTime.clone();
+}
 
-    public Date getInTime() {
-        
-        return inTime;
-    }
+public Date getOutTime() {
+    return outTime = outTime == null ? null : (Date) outTime.clone();
+}
 
-    public void setInTime(Date inTime) {
-        
-        this.inTime = inTime;
-    }
-
-    public Date getOutTime() {
-        return outTime;
-    }
-
-    public void  setOutTime(Date outTime) {
-        
-        this.outTime = outTime;
-    }
-
-    public boolean getRecurringVehicle() { return recurringVehicle; }
-
-    public void setRecurringVehicle(boolean recurringVehicle) { this.recurringVehicle = recurringVehicle; }
+public void setOutTime(Date outTime) {
+    this.outTime = outTime == null ? null : (Date) outTime.clone();
+}
 }

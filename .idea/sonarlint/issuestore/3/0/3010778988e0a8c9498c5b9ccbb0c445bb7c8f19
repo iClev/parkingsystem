@@ -1,0 +1,25 @@
+
+7
+java:S34574"Not enough arguments.(« ùÄúÿÿÿÿ8ÕÍœ‚€/
+^
+java:S3457s"AFormat specifiers should be used instead of string concatenation.(¹ÉÛÂ8ÕÍœ‚€/
+T
+java:S2629w"7Use the built-in formatting to construct this argument.(’Ïëç8ÕÍœ‚€/
+Y
+java:S26298"7Use the built-in formatting to construct this argument.(çñ„Šüÿÿÿÿ8ÕÍœ‚€/
+^
+java:S3457t"AFormat specifiers should be used instead of string concatenation.(’Ïëç8ÕÍœ‚€/
+^
+java:S3457v"AFormat specifiers should be used instead of string concatenation.(¹ÉÛÂ8ÕÍœ‚€/
+G
+java:S34577"%String contains no format specifiers.(î´²”ÿÿÿÿÿ8ÕÍœ‚€/
+Q
+java:S1128"4Remove this unused import 'java.text.MessageFormat'.(Íğûå8ÕÍœ‚€/
+T
+java:S2629t"7Use the built-in formatting to construct this argument.(’Ïëç8ÕÍœ‚€/
+c
+java:S34578"AFormat specifiers should be used instead of string concatenation.(çñ„Šüÿÿÿÿ8ÕÍœ‚€/
+^
+java:S3457w"AFormat specifiers should be used instead of string concatenation.(’Ïëç8ÕÍœ‚€/
+Y
+java:S1068"7Remove this unused "DAYS_FOR_RECURRENCE" private field.(ÈßËıÿÿÿÿ8´—½€/

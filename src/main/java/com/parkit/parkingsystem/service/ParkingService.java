@@ -8,9 +8,7 @@ import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.util.InputReaderUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.Logger.*;
 
-import java.text.MessageFormat;
 import java.util.Date;
 
 public class ParkingService {
@@ -22,10 +20,6 @@ public class ParkingService {
     private InputReaderUtil inputReaderUtil;
     private ParkingSpotDAO parkingSpotDAO;
     private TicketDAO ticketDAO;
-    
-    private int count;
-    public double disCount;
-    boolean recurring;
  
     public ParkingService(InputReaderUtil inputReaderUtil, ParkingSpotDAO parkingSpotDAO, TicketDAO ticketDAO) {
         this.inputReaderUtil = inputReaderUtil;
@@ -51,8 +45,8 @@ public class ParkingService {
                 ticketDAO.saveTicket(ticket);
                 
                 //5% discount for recurring users
-                recurring = ticketDAO.isAlreadyClient(vehicleRegNumber);
-                if (count >= DAYS_FOR_RECURRENCE){
+               boolean recurring = ticketDAO.isAlreadyClient(vehicleRegNumber);
+                if (recurring){
                     logger.info("Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount");
                 }
                 logger.info("Generated Ticket and saved in DB");
@@ -108,15 +102,14 @@ public class ParkingService {
             Date outTime = new Date();
             ticket.setOutTime(outTime);
             
-            recurring = ticketDAO.isAlreadyClient(vehicleRegNumber); //Added
+           boolean recurring = ticketDAO.isAlreadyClient(vehicleRegNumber); //Added
             fareCalculatorService.calculateFare(ticket);
             if (ticketDAO.updateTicket(ticket)) {
                 ParkingSpot parkingSpot = ticket.getParkingSpot();
                 parkingSpot.setAvailable(true);
                 parkingSpotDAO.updateParking(parkingSpot);
     
-                if (count >= DAYS_FOR_RECURRENCE) {
-                    disCount = ticket.getPrice();
+                if (recurring) {
                     logger.info("Please pay the parking fare:" + ticket.getPrice());
                     logger.info("Recorded out-time for vehicle number:" + ticket.getVehicleRegNumber() + " is:" + outTime);
                 }else {
