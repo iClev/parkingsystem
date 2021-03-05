@@ -17,7 +17,7 @@ import java.util.Date;
     public static FareCalculatorService fareCalculatorService;
     public static Ticket ticket;
     boolean recurring;
-    private static ParkingSpot parkingSpot;
+    public static ParkingSpot parkingSpot;
     
 @BeforeAll
    public static void setUp() {
