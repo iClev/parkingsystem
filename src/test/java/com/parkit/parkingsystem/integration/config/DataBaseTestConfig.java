@@ -4,19 +4,42 @@ import com.parkit.parkingsystem.config.DataBaseConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
+import java.util.Properties;
 
 public class DataBaseTestConfig extends DataBaseConfig {
 
     private static final Logger logger = LogManager.getLogger("DataBaseTestConfig");
+   
+    private static final String FILE_PATH = "src/main/ressources/credentials.properties";
+    
+    private String url;
+    
+    private String userName;
+    
+    private String passWord;
 
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         logger.info("Create DB connection");
         Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/test?useLegacyDatetimeCode=false&serverTimezone=Europe/Paris","root","rootroot");
+        try (InputStream inputStream = new FileInputStream(FILE_PATH)) {
+            Properties properties = new Properties();
+            properties.load(inputStream);
+            url = properties.getProperty("urlTest");
+            userName = properties.getProperty("userName");
+            passWord = properties.getProperty("passWord");
+        } catch (FileNotFoundException fnf) {
+            logger.error("File not found. Please verify credentials file access root.", fnf);
+        } catch (IOException ioe) {
+            logger.error("Error during DB connection. Please check the contents file.", ioe);
+        }
+        return DriverManager.getConnection(url, userName, passWord);
     }
-
+    
     public void closeConnection(Connection con){
         if(con!=null){
             try {
