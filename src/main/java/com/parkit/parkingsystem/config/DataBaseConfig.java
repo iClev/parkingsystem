@@ -10,6 +10,12 @@ import java.io.InputStream;
 import java.sql.*;
 import java.util.Properties;
 
+/**
+ * Class to open and close connection.
+ *
+ * @author Clévyd
+ *
+ **/
 public class DataBaseConfig {
 
     private static final Logger logger = LogManager.getLogger("DataBaseConfig");
@@ -17,11 +23,19 @@ public class DataBaseConfig {
     private static final String FILE_PATH = "src/main/ressources/credentials.properties";
     
     private String url;
-    
+
     private String userName;
     
     private String passWord;
-    
+
+
+/**
+ * Method to open MySQL DB connection.
+ *
+ * @return Connection to database
+ * @throws ClassNotFoundException;
+ * @throws SQLException;
+ */
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         logger.info("Create DB connection");
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -38,7 +52,12 @@ public class DataBaseConfig {
         }
         return DriverManager.getConnection(url, userName, passWord);
     }
-
+    
+/**
+ * Method to close database connection.
+ *
+ * @param con as Connection instance to be closed
+ */
     public void closeConnection(Connection con){
         if(con!=null){
             try {
@@ -50,6 +69,11 @@ public class DataBaseConfig {
         }
     }
 
+/**
+ * Method to close preparedStatement.
+ *
+ * @param ps an instance of PreparedStatement to be closed
+ */
     public void closePreparedStatement(PreparedStatement ps) {
         if(ps!=null){
             try {
@@ -61,6 +85,11 @@ public class DataBaseConfig {
         }
     }
 
+/**
+ * Method to close the resultSet.
+ *
+ * @param rs an instance of ResultSet to be closed
+ */
     public void closeResultSet(ResultSet rs) {
         if(rs!=null){
             try {

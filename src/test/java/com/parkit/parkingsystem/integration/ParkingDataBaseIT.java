@@ -9,10 +9,8 @@ import com.parkit.parkingsystem.model.ParkingSpot;
 import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.service.ParkingService;
 import com.parkit.parkingsystem.util.InputReaderUtil;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -20,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.isNotNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,15 +40,12 @@ class ParkingDataBaseIT {
         parkingSpotDAO.dataBaseConfig = dataBaseTestConfig;
         ticketDAO = new TicketDAO();
         dataBasePrepareService = new DataBasePrepareService();
-        
     }
 
     @BeforeEach
     void setUpPerTest() throws Exception {
         dataBasePrepareService.clearDataBaseEntries();
-       
         when(inputReaderUtil.readSelection()).thenReturn(1);
-        
         when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
         ticketDAO.dataBaseConfig = dataBaseTestConfig;
         parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
@@ -62,6 +56,7 @@ class ParkingDataBaseIT {
     }
 
     @Test
+    @DisplayName("Integration test incoming car")
     void testParkingACar(){
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         parkingService.processIncomingVehicle();
@@ -74,7 +69,6 @@ class ParkingDataBaseIT {
         ticket.setVehicleRegNumber(vehicleRegNumber);
         ticket.setPrice(0);
         ticket.setInTime( new Date());
-        
         assertNotNull(ticketDAO.getTicket("ABCDEF"));
         assertNotNull(ticket.getParkingSpot());
         assertNotNull(ticket.getVehicleRegNumber());
@@ -83,6 +77,7 @@ class ParkingDataBaseIT {
     }
 
     @Test
+    @DisplayName("Integration test exiting car")
     void testParkingLotExit() throws Exception{
         testParkingACar();
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
@@ -97,5 +92,4 @@ class ParkingDataBaseIT {
         boolean testRecurrent = ticketDAO.isAlreadyClient("ABCDEF");
         assertTrue(testRecurrent);
     }
-
 }
