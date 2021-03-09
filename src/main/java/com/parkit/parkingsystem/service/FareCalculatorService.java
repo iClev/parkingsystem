@@ -3,8 +3,19 @@ package com.parkit.parkingsystem.service;
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
 
+/**
+ * Class to contain the fare's calculator
+ *
+ * @author Clévyd
+ */
 public class FareCalculatorService {
-    
+
+/**
+ * Method to calculate the fare with duration staying to park.
+ *
+ * @param ticket
+ * @return duration
+ */
     public double calculateFare(Ticket ticket) {
         if ((ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime()))) {
             throw new IllegalArgumentException("Out time provided is incorrect:" + ticket.getOutTime().toString());
@@ -14,7 +25,6 @@ public class FareCalculatorService {
         
         //TODO: Some tests are failing here. Need to check if this logic is correct
         
-// Feature: Free for the first half hours
         double duration = (outHour - inHour) / (1000*60*60);
         if (duration > 0.5) {
             switch (ticket.getParkingSpot().getParkingType()) {

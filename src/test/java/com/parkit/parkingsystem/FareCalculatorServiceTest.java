@@ -7,16 +7,17 @@ import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.service.FareCalculatorService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
  class FareCalculatorServiceTest {
     public static FareCalculatorService fareCalculatorService;
     public static Ticket ticket;
-    boolean recurring;
     public static ParkingSpot parkingSpot;
     
 @BeforeAll
@@ -33,6 +34,7 @@ import java.util.Date;
     }
 
     @Test
+    @DisplayName("Calculate fare for a CAR")
      void calculateFareCar(){
         Date inTime = new Date();
         inTime.setTime(System.currentTimeMillis() - (60*60*1000));
@@ -47,6 +49,7 @@ import java.util.Date;
     }
 
     @Test
+    @DisplayName("Calculate fare for a BIKE")
     void calculateFareBike(){
         Date inTime = new Date();
         inTime.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
@@ -61,6 +64,7 @@ import java.util.Date;
     }
 
     @Test
+    @DisplayName("Calculate fare for UNKNOW type")
     void calculateFareUnkownType(){
         Date inTime = new Date();
         inTime.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
@@ -75,6 +79,7 @@ import java.util.Date;
     }
     
     @Test
+    @DisplayName("Calculate fare for a CAR in the future")
     void calculateFareCarWithFutureInTime() {
         Date inTime = new Date();
         inTime.setTime(System.currentTimeMillis() + (60 * 60 * 1000));
@@ -87,6 +92,7 @@ import java.util.Date;
         assertThrows(IllegalArgumentException.class, () -> fareCalculatorService.calculateFare(ticket));
     }
     @Test
+    @DisplayName("Calculate fare for a BIKE in the future")
     void calculateFareBikeWithFutureInTime(){
         Date inTime = new Date();
         inTime.setTime(System.currentTimeMillis() + (60 * 60 * 1000));
@@ -101,8 +107,8 @@ import java.util.Date;
     }
     
      @Test
+     @DisplayName("Calculate fare for a CAR less than 1 hour")
      void calculateFareCarWithLessThanOneHourParkingTime(){
-         //45 minutes parking time should give 3/4th parking fare
          Date inTime = new Date();
          inTime.setTime(System.currentTimeMillis() - (45 * 60 * 1000));
          Date outTime = new Date();
@@ -117,8 +123,8 @@ import java.util.Date;
      }
      
     @Test
+    @DisplayName("Calculate fare for a BIKE less than 1 hour")
     void calculateFareBikeWithLessThanOneHourParkingTime() {
-        //45 minutes parking time should give 3/4th parking fare
         Date inTime = new Date();
         inTime.setTime(System.currentTimeMillis() - (45 * 60 * 1000));
         Date outTime = new Date();
@@ -135,8 +141,8 @@ import java.util.Date;
     }
 
     @Test
+    @DisplayName("Calculate fare for a CAR more than 1 day")
     void calculateFareCarWithMoreThanADayParkingTime(){
-        //24 hours parking time should give 24 * parking fare per hour
         Date inTime = new Date();
         inTime.setTime(System.currentTimeMillis() - (24 * 60 * 60 * 1000));
         Date outTime = new Date();
@@ -150,8 +156,8 @@ import java.util.Date;
         assertEquals( (24 * Fare.CAR_RATE_PER_HOUR) , ticket.getPrice());
     }
     @Test
+    @DisplayName("Calculate fare for a BIKE more than 1 day")
     void calculateFareBikeWithMoreThanADayParkingTime() {
-        //24 hours parking time should give 24 * parking fare per hour
         Date inTime = new Date();
         inTime.setTime(System.currentTimeMillis() - (24 * 60 * 60 * 1000));
         Date outTime = new Date();
@@ -167,8 +173,8 @@ import java.util.Date;
     }
     
     @Test
+    @DisplayName("Calculate fare for free less 30 minutes for CAR")
     void calculateFareCareWithFreeParkingFirstThirtyMinute(){
-        // 30 min should give free fare
         Date inTime = new Date();
         inTime.setTime(System.currentTimeMillis() - (30 * 60 * 1000));
         Date outTime = new Date();
@@ -182,8 +188,8 @@ import java.util.Date;
     }
 
      @Test
+     @DisplayName("Calculate fare for free less 30 minutes for BIKE")
      void calculateFareBikeWithFreeParkingFirstThirtyMinute() {
-         // 30 min should give free fare
          Date inTime = new Date();
          inTime.setTime(System.currentTimeMillis() - (30 * 60 * 1000));
          Date outTime = new Date();

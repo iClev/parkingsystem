@@ -11,22 +11,34 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 
+/**
+ * Class to contain services of parking
+ *
+ * @author Clévyd
+ */
 public class ParkingService {
 
     private static final Logger logger = LogManager.getLogger("ParkingService");
-    private static final int DAYS_FOR_RECURRENCE=1;
     private static FareCalculatorService fareCalculatorService = new FareCalculatorService();
     
     private InputReaderUtil inputReaderUtil;
     private ParkingSpotDAO parkingSpotDAO;
     private TicketDAO ticketDAO;
- 
+
+/**
+ * @param inputReaderUtil
+ * @param parkingSpotDAO
+ * @param ticketDAO
+ */
     public ParkingService(InputReaderUtil inputReaderUtil, ParkingSpotDAO parkingSpotDAO, TicketDAO ticketDAO) {
         this.inputReaderUtil = inputReaderUtil;
         this.parkingSpotDAO = parkingSpotDAO;
         this.ticketDAO = ticketDAO;
     }
-    
+
+/**
+ * Method to capture informations, to check and to save ticket in DB
+ */
     public void processIncomingVehicle() {
         try {
             ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
@@ -47,23 +59,33 @@ public class ParkingService {
                 //5% discount for recurring users
                boolean recurring = ticketDAO.isAlreadyClient(vehicleRegNumber);
                 if (recurring){
-                    logger.info("Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount");
+                    logger.info("Welcome back! As a recurring" + "user of our parking lot," + "you'll benefit from a 5% discount");
                 }
                 logger.info("Generated Ticket and saved in DB");
-                logger.info("Please park your vehicle in spot number:{0}", parkingSpot.getId());
-                logger.info("Recorded in-time for vehicle number:" + vehicleRegNumber + " is:" + inTime);
+                logger.info("Please park your vehicle in spot number: {}", parkingSpot.getId());
+                logger.info("Recorded in-time for vehicle number: {} is: {}", vehicleRegNumber, inTime);
               
             }
         } catch (Exception e) {
             logger.error("Unable to process incoming vehicle", e);
         }
     }
-    
+
+/**
+ * @return vehicle registration number enter by user
+ * @throws Exception
+ */
     private String getVehichleRegNumber() throws Exception {
         logger.info("Please type the vehicle registration number and press enter key");
         return inputReaderUtil.readVehicleRegistrationNumber();
     }
-    
+
+/**
+ * Method to get the next parking spot number available and to create a parking
+ * spot for user
+ *
+ * @return parkingSpot
+ */
     public ParkingSpot getNextParkingNumberIfAvailable() {
         int parkingNumber;
         ParkingSpot parkingSpot = null;
@@ -82,7 +104,10 @@ public class ParkingService {
         }
         return parkingSpot;
     }
-    
+
+/**
+ * @return parking type
+ */
     private ParkingType getVehichleType() {
         logger.info("Please select vehicle type from menu");
         logger.info("1 CAR");
@@ -95,6 +120,10 @@ public class ParkingService {
             throw new IllegalArgumentException("Entered input is invalid");
         }
     }
+
+/**
+ * Method to update out time and calculate the fare for a user
+ */
     public void processExitingVehicle() {
         try {
             String vehicleRegNumber = getVehichleRegNumber();
@@ -110,11 +139,11 @@ public class ParkingService {
                 parkingSpotDAO.updateParking(parkingSpot);
     
                 if (recurring) {
-                    logger.info("Please pay the parking fare:" + ticket.getPrice());
-                    logger.info("Recorded out-time for vehicle number:" + ticket.getVehicleRegNumber() + " is:" + outTime);
+                    logger.info("Please pay the parking fare:{}", ticket.getPrice());
+                    logger.info("Recorded out-time for vehicle number:{} is {}", ticket.getVehicleRegNumber(), outTime);
                 }else {
-                    logger.info("Please pay the parking fare:" + ticket.getPrice());
-                    logger.info("Recorded out-time for vehicle number:" + ticket.getVehicleRegNumber() + " is: " + outTime);
+                    logger.info("Please pay the parking fare:{}", ticket.getPrice());
+                    logger.info("Recorded out-time for vehicle number:{} is:{}" ,ticket.getVehicleRegNumber(), outTime);
                 }
             }else {
                 logger.info("Unable to update ticket information. Error occurred");

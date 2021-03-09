@@ -13,20 +13,28 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 
+/**
+ * Class to save, to get, to update and to check a ticket in DB.
+ *
+ * @author Clévyd
+ */
 public class TicketDAO {
 
     private static final Logger logger = LogManager.getLogger("TicketDAO");
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
-    
+
+/**
+ * Method to save a ticket in DB.
+ *
+ * @param ticket
+ * @return boolean true (ps.execute()) or false it doesn't save the ticket
+ */
     public boolean saveTicket(Ticket ticket){
         Connection con = null;
         PreparedStatement ps = null;
         try {
             con = dataBaseConfig.getConnection();
             ps = con.prepareStatement(DBConstants.SAVE_TICKET);
-            
-            //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
-           
             ps.setInt(1,ticket.getParkingSpot().getId());
             ps.setString(2, ticket.getVehicleRegNumber());
             ps.setDouble(3, ticket.getPrice());
@@ -43,6 +51,12 @@ public class TicketDAO {
         return false;
     }
 
+/**
+ * Method to get a ticket from DB.
+ *
+ * @param vehicleRegNumber
+ * @return ticket that is in the database
+ */
     public Ticket getTicket(String vehicleRegNumber) {
         Connection con = null;
         PreparedStatement ps = null;
@@ -51,7 +65,6 @@ public class TicketDAO {
         try {
             con = dataBaseConfig.getConnection();
             ps = con.prepareStatement(DBConstants.GET_TICKET);
-            //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
             ps.setString(1,vehicleRegNumber);
             rs = ps.executeQuery();
             if(rs.next()){
@@ -74,6 +87,13 @@ public class TicketDAO {
         return ticket;
     }
 
+/**
+ * Method to update a ticket in DB.
+ *
+ * @param ticket
+ * @return boolean true (ps.execute()) or
+ * false if "id" doesn't update the ticket in DB
+ */
     public boolean updateTicket(Ticket ticket) {
         Connection con = null;
         PreparedStatement ps = null;
@@ -93,23 +113,26 @@ public class TicketDAO {
         }
         return false;
     }
+
     
-// Add recurring customer check
+/**
+ * Method for checking that the vehicle is already a customer.
+ *
+ * @param vehicleRegNumber
+ * @return recurring
+ */
     public boolean isAlreadyClient(String vehicleRegNumber) {
         Connection con = null;
         PreparedStatement ps = null;
-        ResultSet rs = null; // Initialisation
+        ResultSet rs = null;
         boolean recurring = false;
         int count =0;
         
         try {
             con = dataBaseConfig.getConnection();
-            // First: verification of type of user : recurring or not ?
             ps = con.prepareStatement(DBConstants.COUNT_TICKET);
             ps.setString(1, vehicleRegNumber);
             rs = ps.executeQuery();
-
-//            True, if the DB gets the vehicle's tickets
             while (rs.next()) {
                 count = rs.getInt(1);
                 logger.info(count);
@@ -117,7 +140,6 @@ public class TicketDAO {
             if (count>=1) {
                 recurring = true;
             }
-
         }catch (Exception ex){
             logger.error("Error to verify if it's a recurring user",ex);
         }finally {
