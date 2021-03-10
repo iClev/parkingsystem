@@ -7,5 +7,5 @@ package com.parkit.parkingsystem.constants;
  * @author Clévyd
  */
 public enum ParkingType {
-    CAR, BIKE
+	CAR, BIKE
 }

@@ -11,50 +11,74 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-<span class="fc" id="L14">public class ParkingSpotDAO {</span>
-<span class="fc" id="L15">    private static final Logger logger = LogManager.getLogger(&quot;ParkingSpotDAO&quot;);</span>
+/**
+ * Class to get and update parking spot in DB.
+ *
+ * @author Clévyd
+ *
+ */
+<span class="fc" id="L20">public class ParkingSpotDAO {</span>
 
-<span class="fc" id="L17">  public DataBaseConfig dataBaseConfig = new DataBaseConfig();</span>
-   
+/**
+ *
+ */
+<span class="fc" id="L25">    private static final Logger logger = LogManager.getLogger(&quot;ParkingSpotDAO&quot;);</span>
+
+<span class="fc" id="L27">    public DataBaseConfig dataBaseConfig = new DataBaseConfig();</span>
+
+/**
+ * Method to get the next parking spot available.
+ *
+ * @param parkingType;
+ * @return result the number of the next parking spot available or -1
+ * if no parking spot available
+ */
     public int getNextAvailableSlot(ParkingType parkingType) {
-<span class="fc" id="L20">        Connection con = null;</span>
-<span class="fc" id="L21">        int result = -1;</span>
-<span class="fc" id="L22">        PreparedStatement ps = null;</span>
+<span class="fc" id="L37">        Connection con = null;</span>
+<span class="fc" id="L38">        int result = -1;</span>
+<span class="fc" id="L39">        PreparedStatement ps = null;</span>
+<span class="fc" id="L40">        ResultSet rs = null;</span>
         try {
-<span class="fc" id="L24">            con = dataBaseConfig.getConnection();</span>
-<span class="fc" id="L25">            ps = con.prepareStatement(DBConstants.GET_NEXT_PARKING_SPOT);</span>
-<span class="fc" id="L26">            ps.setString(1, parkingType.toString());</span>
-<span class="fc" id="L27">            ResultSet rs = ps.executeQuery();</span>
-<span class="pc bpc" id="L28" title="1 of 2 branches missed.">            if (rs.next()) {</span>
-<span class="fc" id="L29">                result = rs.getInt(1);</span>
+<span class="fc" id="L42">            con = dataBaseConfig.getConnection();</span>
+<span class="fc" id="L43">            ps = con.prepareStatement(DBConstants.GET_NEXT_PARKING_SPOT);</span>
+<span class="fc" id="L44">            ps.setString(1, parkingType.toString());</span>
+<span class="fc" id="L45">            rs = ps.executeQuery();</span>
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L47">                result = rs.getInt(1);</span>
             }
-<span class="fc" id="L31">            dataBaseConfig.closeResultSet(rs);</span>
-<span class="nc" id="L32">        } catch (Exception ex) {</span>
-<span class="nc" id="L33">            logger.error(&quot;Error fetching next available slot&quot;, ex);</span>
+<span class="nc" id="L49">        } catch (Exception ex) {</span>
+<span class="nc" id="L50">            logger.error(&quot;Error fetching next available slot&quot;, ex);</span>
         } finally {
-<span class="fc" id="L35">            dataBaseConfig.closeConnection(con);</span>
-<span class="fc" id="L36">            dataBaseConfig.closePreparedStatement(ps);</span>
+<span class="fc" id="L52">            dataBaseConfig.closeConnection(con);</span>
+<span class="fc" id="L53">            dataBaseConfig.closePreparedStatement(ps);</span>
+<span class="fc" id="L54">            dataBaseConfig.closeResultSet(rs);</span>
         }
-<span class="fc" id="L38">        return result;</span>
+<span class="fc" id="L56">        return result;</span>
     }
 
+/**
+ * Method to update the availability of parking spot.
+ *
+ * @param parkingSpot;
+ * @return boolean true (updateRowCount == 1) or false if it doesn't update
+ * parking spot
+ */
     public boolean updateParking(ParkingSpot parkingSpot) {
-        //update the availability fo that parking slot
-<span class="fc" id="L43">        Connection con = null;</span>
-<span class="fc" id="L44">        PreparedStatement ps = null;</span>
+<span class="fc" id="L67">        Connection con = null;</span>
+<span class="fc" id="L68">        PreparedStatement ps = null;</span>
         try {
-<span class="fc" id="L46">            con = dataBaseConfig.getConnection();</span>
-<span class="fc" id="L47">            ps = con.prepareStatement(DBConstants.UPDATE_PARKING_SPOT);</span>
-<span class="fc" id="L48">            ps.setBoolean(1, parkingSpot.isAvailable());</span>
-<span class="fc" id="L49">            ps.setInt(2, parkingSpot.getId());</span>
-<span class="fc" id="L50">            int updateRowCount = ps.executeUpdate();</span>
-<span class="pc bpc" id="L51" title="1 of 2 branches missed.">            return (updateRowCount == 1);</span>
-<span class="nc" id="L52">        }catch (Exception ex){</span>
-<span class="nc" id="L53">            logger.error(&quot;Error updating parking info&quot;,ex);</span>
-<span class="nc" id="L54">            return false;</span>
+<span class="fc" id="L70">            con = dataBaseConfig.getConnection();</span>
+<span class="fc" id="L71">            ps = con.prepareStatement(DBConstants.UPDATE_PARKING_SPOT);</span>
+<span class="fc" id="L72">            ps.setBoolean(1, parkingSpot.isAvailable());</span>
+<span class="fc" id="L73">            ps.setInt(2, parkingSpot.getId());</span>
+<span class="fc" id="L74">            int updateRowCount = ps.executeUpdate();</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">            return (updateRowCount == 1);</span>
+<span class="nc" id="L76">        }catch (Exception ex){</span>
+<span class="nc" id="L77">            logger.error(&quot;Error updating parking info&quot;,ex);</span>
+<span class="nc" id="L78">            return false;</span>
         }finally {
-<span class="fc" id="L56">            dataBaseConfig.closeConnection(con);</span>
-<span class="fc" id="L57">            dataBaseConfig.closePreparedStatement(ps);</span>
+<span class="fc" id="L80">            dataBaseConfig.closeConnection(con);</span>
+<span class="fc" id="L81">            dataBaseConfig.closePreparedStatement(ps);</span>
         }
     }
 }

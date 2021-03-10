@@ -1,0 +1,159 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": ""
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": true,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 4,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false // root node is included
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.parkit.parkingsystem.FareCalculatorServiceTest"
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_995418475 { 
+   	label=parkit
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_1993659314 { 
+   	label=parkingsystem
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   FareCalculatorServiceTest1280085349[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)FareCalculatorServiceTest</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+   ticket: Ticket [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># calculateFareBike()</TD></TR>
+<TR><TD ALIGN="LEFT" ># calculateFareBikeWithFreeParkingFirstThirtyMinute()</TD></TR>
+<TR><TD ALIGN="LEFT" ># calculateFareBikeWithFutureInTime()</TD></TR>
+<TR><TD ALIGN="LEFT" ># calculateFareBikeWithLessThanOneHourParkingTime()</TD></TR>
+<TR><TD ALIGN="LEFT" ># calculateFareBikeWithMoreThanADayParkingTime()</TD></TR>
+<TR><TD ALIGN="LEFT" ># calculateFareCar()</TD></TR>
+<TR><TD ALIGN="LEFT" ># calculateFareCarWithFutureInTime()</TD></TR>
+<TR><TD ALIGN="LEFT" ># calculateFareCarWithLessThanOneHourParkingTime()</TD></TR>
+<TR><TD ALIGN="LEFT" ># calculateFareCarWithMoreThanADayParkingTime()</TD></TR>
+<TR><TD ALIGN="LEFT" ># calculateFareCareWithFreeParkingFirstThirtyMinute()</TD></TR>
+<TR><TD ALIGN="LEFT" ># calculateFareUnkownType()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ParkingSpot1007764970[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ParkingSpot</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   isAvailable: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   number: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   parkingType: ParkingType [0..1]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Ticket1007764970[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Ticket</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   id: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   inTime: Date [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   outTime: Date [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   parkingSpot: ParkingSpot [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   price: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   vehicleRegNumber: String [0..1]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+FareCalculatorServiceTest1280085349 -> Ticket1007764970[label="ticket
+[0..1]"];
+Ticket1007764970 -> ParkingSpot1007764970[label="parkingSpot
+[0..1]"];
+    
+}
+@enduml
