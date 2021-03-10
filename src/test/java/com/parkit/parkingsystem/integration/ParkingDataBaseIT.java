@@ -1,5 +1,6 @@
 package com.parkit.parkingsystem.integration;
 
+import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
@@ -20,76 +21,110 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+
+/**
+ * @author Clévyd
+ * @version 3.0
+ * @see Fare
+ * @see ParkingSpotDAO
+ * @see TicketDAO
+ * @see DataBaseTestConfig
+ * @see DataBasePrepareService
+ * @see ParkingSpot
+ * @see Ticket
+ * @see ParkingService
+ * @see InputReaderUtil
+ */
 @ExtendWith(MockitoExtension.class)
 class ParkingDataBaseIT {
 
-    private static DataBaseTestConfig dataBaseTestConfig = new DataBaseTestConfig();
-    private static ParkingSpotDAO parkingSpotDAO;
-    private static TicketDAO ticketDAO;
-    private static ParkingSpot parkingSpot;
-    private static ParkingService parkingService;
-    private static DataBasePrepareService dataBasePrepareService;
-    private static String vehicleRegNumber = "ABCDEF";
+private static final DataBaseTestConfig dataBaseTestConfig = new DataBaseTestConfig();
+private static final String vehicleRegNumber = "ABCDEF";
+private static ParkingSpotDAO parkingSpotDAO;
+private static TicketDAO ticketDAO;
+private static DataBasePrepareService dataBasePrepareService;
+@Mock
+private static InputReaderUtil inputReaderUtil;
 
-    @Mock
-    private static InputReaderUtil inputReaderUtil;
+@BeforeAll
+private static void setUp() throws Exception {
+	parkingSpotDAO = new ParkingSpotDAO();
+	parkingSpotDAO.dataBaseConfig = dataBaseTestConfig;
+	ticketDAO = new TicketDAO();
+	dataBasePrepareService = new DataBasePrepareService();
+}
 
-    @BeforeAll
-    private static void setUp() throws Exception{
-        parkingSpotDAO = new ParkingSpotDAO();
-        parkingSpotDAO.dataBaseConfig = dataBaseTestConfig;
-        ticketDAO = new TicketDAO();
-        dataBasePrepareService = new DataBasePrepareService();
-    }
+@AfterAll
+private static void tearDown() {
+}
 
-    @BeforeEach
-    void setUpPerTest() throws Exception {
-        dataBasePrepareService.clearDataBaseEntries();
-        when(inputReaderUtil.readSelection()).thenReturn(1);
-        when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
-        ticketDAO.dataBaseConfig = dataBaseTestConfig;
-        parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-    }
+@BeforeEach
+void setUpPerTest() throws Exception {
+	when(inputReaderUtil.readSelection()).thenReturn(1);
+	when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
+	ticketDAO.dataBaseConfig = dataBaseTestConfig;
+	dataBasePrepareService.clearDataBaseEntries();
+}
 
-    @AfterAll
-    private static void tearDown(){
-    }
+@Test
+@DisplayName("Integration test incoming car")
+void testParkingACar() throws Exception {
+	
+	// TODO: check that a ticket is actually saved in DB and Parking table is updated with availability
+	
+	/**
+	 * GIVEN : call ParkingService
+	 */
+	final ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+	
+	/**
+	 * WHEN : call parkingService.processIncomingVehicle
+	 */
+	final Date inTime = new Date();
+	inTime.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
+	parkingService.processIncomingVehicle();
+	final ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
+	
+	/**
+	 * THEN : check that ticket is actually saved in DB and parking table is update
+	 * in DB
+	 */
+	final Ticket ticket = new Ticket();
+	ticket.setParkingSpot(parkingSpot);
+	ticket.setVehicleRegNumber(vehicleRegNumber);
+	ticket.setPrice(0);
+	ticket.setInTime(new Date());
+	assertNotNull(ticketDAO.getTicket("ABCDEF"));
+	assertNotNull(ticket.getParkingSpot());
+	assertNotNull(ticket.getVehicleRegNumber());
+	assertEquals(0, ticket.getPrice());
+	assertNotNull(ticket.getInTime());
+}
 
-    @Test
-    @DisplayName("Integration test incoming car")
-    void testParkingACar(){
-        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-        parkingService.processIncomingVehicle();
-        
-        //TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability
-        
-        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
-        Ticket ticket = new Ticket();
-        ticket.setParkingSpot(parkingSpot);
-        ticket.setVehicleRegNumber(vehicleRegNumber);
-        ticket.setPrice(0);
-        ticket.setInTime( new Date());
-        assertNotNull(ticketDAO.getTicket("ABCDEF"));
-        assertNotNull(ticket.getParkingSpot());
-        assertNotNull(ticket.getVehicleRegNumber());
-        assertEquals(0,ticket.getPrice());
-        assertNotNull(ticket.getInTime());
-    }
-
-    @Test
-    @DisplayName("Integration test exiting car")
-    void testParkingLotExit() throws Exception{
-        testParkingACar();
-        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-        parkingService.processIncomingVehicle();
-        
-        //TODO: check that the fare generated and out time are populated correctly in the database
-        
-        Date inTime = new Date();
-        inTime.setTime(System.currentTimeMillis());
-        parkingService.processExitingVehicle();
-        
-        boolean testRecurrent = ticketDAO.isAlreadyClient("ABCDEF");
-        assertTrue(testRecurrent);
-    }
+@Test
+@DisplayName("Integration test exiting car")
+void testParkingLotExit() throws Exception {
+	
+	// TODO: check that the fare generated and out time are populated correctly in the database
+	
+	/**
+	 * GIVEN : call ParkingService
+	 */
+	testParkingACar();
+	final ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+	
+	/**
+	 * WHEN : call parkingService.processExitingVehicle
+	 */
+	Thread.sleep(500);
+	parkingService.processIncomingVehicle();
+	/**
+	 * THEN : check fare generate and out time populated
+	 */
+	ticketDAO.getTicket("ABCDEF");
+	ticketDAO.getTicket("ABCDEF").setPrice(Fare.CAR_RATE_PER_HOUR);
+	
+	final boolean testRecurrent = ticketDAO.isAlreadyClient("ABCDEF");
+	assertTrue(testRecurrent);
+}
 }

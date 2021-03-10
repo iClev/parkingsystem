@@ -9,14 +9,15 @@ import com.parkit.parkingsystem.service.InteractiveShell;
  */
 public class App {
 
+private App() {
+}
+
 /**
  * This method main launch Park'it Application.
  *
  * @param args the method main
  */
-    public static void main(String[] args){
-        InteractiveShell.loadInterface();
-    }
-    private App(){
-    }
+public static void main(final String[] args) {
+	InteractiveShell.loadInterface();
+}
 }
