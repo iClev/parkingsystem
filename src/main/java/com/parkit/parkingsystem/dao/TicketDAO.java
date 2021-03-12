@@ -29,7 +29,7 @@ public DataBaseConfig dataBaseConfig = new DataBaseConfig();
  * @param ticket
  * @return boolean true (ps.execute()) or false it doesn't save the ticket
  */
-public boolean saveTicket(final Ticket ticket) {
+public boolean saveTicket(Ticket ticket) {
 	Connection con = null;
 	PreparedStatement ps = null;
 	try {
@@ -42,7 +42,7 @@ public boolean saveTicket(final Ticket ticket) {
 		ps.setTimestamp(4, new Timestamp(ticket.getInTime().getTime()));
 		ps.setTimestamp(5, (ticket.getOutTime() == null) ? null : (new Timestamp(ticket.getOutTime().getTime())));
 		return ps.execute();
-	} catch (final Exception ex) {
+	} catch (Exception ex) {
 		logger.error("Error fetching next available slot", ex);
 	} finally {
 		dataBaseConfig.closeConnection(con);
@@ -57,7 +57,7 @@ public boolean saveTicket(final Ticket ticket) {
  * @param vehicleRegNumber
  * @return ticket that is in the database
  */
-public Ticket getTicket(final String vehicleRegNumber) {
+public Ticket getTicket(String vehicleRegNumber) {
 	Connection con = null;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
@@ -69,7 +69,7 @@ public Ticket getTicket(final String vehicleRegNumber) {
 		rs = ps.executeQuery();
 		if (rs.next()) {
 			ticket = new Ticket();
-			final ParkingSpot parkingSpot = new ParkingSpot(rs.getInt(1), ParkingType.valueOf(rs.getString(6)), false);
+			ParkingSpot parkingSpot = new ParkingSpot(rs.getInt(1), ParkingType.valueOf(rs.getString(6)), false);
 			ticket.setParkingSpot(parkingSpot);
 			ticket.setId(rs.getInt(2));
 			ticket.setVehicleRegNumber(vehicleRegNumber);
@@ -77,7 +77,7 @@ public Ticket getTicket(final String vehicleRegNumber) {
 			ticket.setInTime(rs.getTimestamp(4));
 			ticket.setOutTime(rs.getTimestamp(5));
 		}
-	} catch (final Exception ex) {
+	} catch (Exception ex) {
 		logger.error("Error fetching next available slot", ex);
 	} finally {
 		dataBaseConfig.closeResultSet(rs);
@@ -94,7 +94,7 @@ public Ticket getTicket(final String vehicleRegNumber) {
  * @return boolean true (ps.execute()) or
  * false if "id" doesn't update the ticket in DB
  */
-public boolean updateTicket(final Ticket ticket) {
+public boolean updateTicket(Ticket ticket) {
 	Connection con = null;
 	PreparedStatement ps = null;
 	try {
@@ -105,7 +105,7 @@ public boolean updateTicket(final Ticket ticket) {
 		ps.setInt(3, ticket.getId());
 		ps.execute();
 		return true;
-	} catch (final Exception ex) {
+	} catch (Exception ex) {
 		logger.error("Error saving ticket info", ex);
 	} finally {
 		dataBaseConfig.closeConnection(con);
@@ -121,7 +121,7 @@ public boolean updateTicket(final Ticket ticket) {
  * @param vehicleRegNumber
  * @return recurring
  */
-public boolean isAlreadyClient(final String vehicleRegNumber) {
+public boolean isAlreadyClient(String vehicleRegNumber) {
 	Connection con = null;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
@@ -140,7 +140,7 @@ public boolean isAlreadyClient(final String vehicleRegNumber) {
 		if (count >= 1) {
 			recurring = true;
 		}
-	} catch (final Exception ex) {
+	} catch (Exception ex) {
 		logger.error("Error to verify if it's a recurring user", ex);
 	} finally {
 		dataBaseConfig.closeResultSet(rs);

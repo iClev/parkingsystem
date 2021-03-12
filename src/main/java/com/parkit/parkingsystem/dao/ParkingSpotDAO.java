@@ -32,7 +32,7 @@ public DataBaseConfig dataBaseConfig = new DataBaseConfig();
  * @return result the number of the next parking spot available or -1
  * if no parking spot available
  */
-public int getNextAvailableSlot(final ParkingType parkingType) {
+public int getNextAvailableSlot(ParkingType parkingType) {
 	Connection con = null;
 	int result = -1;
 	PreparedStatement ps = null;
@@ -45,7 +45,7 @@ public int getNextAvailableSlot(final ParkingType parkingType) {
 		if (rs.next()) {
 			result = rs.getInt(1);
 		}
-	} catch (final Exception ex) {
+	} catch (Exception ex) {
 		logger.error("Error fetching next available slot", ex);
 	} finally {
 		dataBaseConfig.closeConnection(con);
@@ -62,7 +62,7 @@ public int getNextAvailableSlot(final ParkingType parkingType) {
  * @return boolean true (updateRowCount == 1) or false if it doesn't update
  * parking spot
  */
-public boolean updateParking(final ParkingSpot parkingSpot) {
+public boolean updateParking(ParkingSpot parkingSpot) {
 	Connection con = null;
 	PreparedStatement ps = null;
 	try {
@@ -70,9 +70,9 @@ public boolean updateParking(final ParkingSpot parkingSpot) {
 		ps = con.prepareStatement(DBConstants.UPDATE_PARKING_SPOT);
 		ps.setBoolean(1, parkingSpot.isAvailable());
 		ps.setInt(2, parkingSpot.getId());
-		final int updateRowCount = ps.executeUpdate();
+		int updateRowCount = ps.executeUpdate();
 		return (updateRowCount == 1);
-	} catch (final Exception ex) {
+	} catch (Exception ex) {
 		logger.error("Error updating parking info", ex);
 		return false;
 	} finally {

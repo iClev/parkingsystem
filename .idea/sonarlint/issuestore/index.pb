@@ -21,8 +21,6 @@ n
 >src/main/java/com/parkit/parkingsystem/dao/ParkingSpotDAO.java,7\5\7550c37a2401ab8096eab3d6f0d62b891b9c9155
 u
 Esrc/test/java/com/parkit/parkingsystem/FareCalculatorServiceTest.java,3\4\348a6a839f09ba349014f14ea7f0814d4e17dab7
-s
-Csrc/test/java/com/parkit/parkingsystem/integration/DisplayName.java,d\0\d006983e615058a2579b4d468df57748832f079e
 _
 /src/main/java/com/parkit/parkingsystem/App.java,f\4\f413b9814992e2e3525f88e4eb1a9b6234768a0e
 n

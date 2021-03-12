@@ -1,0 +1,25 @@
+
+o
+java:S1104"TMake disCount a static final constant or non-public and provide accessors if needed.(ζΨ»χ8εν²²ÿ.
+R
+java:S2629"7Use the built-in formatting to construct this argument.(’Ολη8εν²²ÿ.
+O
+java:S1128"4Remove this unused import 'java.text.MessageFormat'.(Νπϋε8ΡμΑ²ÿ.
+5
+java:S3457"Not enough arguments.(« ωΔϊÿÿÿÿ8μί²ÿ.
+W
+java:S2629"7Use the built-in formatting to construct this argument.(ηρ„όÿÿÿÿ8εν²²ÿ.
+R
+java:S2629"7Use the built-in formatting to construct this argument.(’Ολη8εν²²ÿ.
+\
+java:S3457"AFormat specifiers should be used instead of string concatenation.(ΉΙΫΒ8εν²²ÿ.
+\
+java:S3457"AFormat specifiers should be used instead of string concatenation.(’Ολη8εν²²ÿ.
+a
+java:S3457"AFormat specifiers should be used instead of string concatenation.(ηρ„όÿÿÿÿ8εν²²ÿ.
+\
+java:S3457"AFormat specifiers should be used instead of string concatenation.(’Ολη8εν²²ÿ.
+\
+java:S3457"AFormat specifiers should be used instead of string concatenation.(ΉΙΫΒ8όµΕ²ÿ.
+E
+java:S3457"%String contains no format specifiers.(ξ΄²”ÿÿÿÿÿ8Β™Α²ÿ.

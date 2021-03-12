@@ -2,93 +2,95 @@
 
 import java.util.Date;
 
-
 /**
  * Class to contain ticket model and his getter/setter
  *
  * @author Clévyd
  */
-<span class="fc" id="L11">public class Ticket {</span>
-    private int id;
-    private ParkingSpot parkingSpot;
-    private String vehicleRegNumber;
-    private double price;
-    private Date inTime;
-    private Date outTime;
+<span class="fc" id="L10">public class Ticket {</span>
+private int id;
+private ParkingSpot parkingSpot;
+private String vehicleRegNumber;
+private double price;
+private Date inTime;
+private Date outTime;
 
-    public int getId() {
-<span class="fc" id="L20">        return id;</span>
-    }
-    
-    public void setId(int id) {
-<span class="fc" id="L24">        this.id = id;</span>
-<span class="fc" id="L25">    }</span>
-    
-    public ParkingSpot getParkingSpot() {
-<span class="fc" id="L28">        return parkingSpot;</span>
-    }
+public int getId() {
+<span class="nc" id="L19">	return id;</span>
+}
+
+public void setId(int id) {
+<span class="fc" id="L23">	this.id = id;</span>
+<span class="fc" id="L24">}</span>
+
+/**
+ * @return parkingSpot
+ */
+public ParkingSpot getParkingSpot() {
+<span class="fc" id="L30">	return parkingSpot;</span>
+}
 
 /**
  * @param parkingSpot;
  */
-    public void setParkingSpot(ParkingSpot parkingSpot) {
-<span class="fc" id="L35">        this.parkingSpot = parkingSpot;</span>
-<span class="fc" id="L36">    }</span>
+public void setParkingSpot(ParkingSpot parkingSpot) {
+<span class="fc" id="L37">	this.parkingSpot = parkingSpot;</span>
+<span class="fc" id="L38">}</span>
 
 /**
  * @return vehicleRegNumber
  */
-    public String getVehicleRegNumber() {
-<span class="fc" id="L42">        return vehicleRegNumber;</span>
-    }
+public String getVehicleRegNumber() {
+<span class="fc" id="L44">	return vehicleRegNumber;</span>
+}
 
 /**
  * @param vehicleRegNumber;
  */
-    public void setVehicleRegNumber(String vehicleRegNumber) {
-<span class="fc" id="L49">        this.vehicleRegNumber = vehicleRegNumber;</span>
-<span class="fc" id="L50">    }</span>
+public void setVehicleRegNumber(String vehicleRegNumber) {
+<span class="fc" id="L51">	this.vehicleRegNumber = vehicleRegNumber;</span>
+<span class="fc" id="L52">}</span>
 
 /**
  * @return price
  */
-    public double getPrice() {
-<span class="fc" id="L56">        return price;</span>
-    }
+public double getPrice() {
+<span class="fc" id="L58">	return price;</span>
+}
 
 /**
  * @param price;
  */
-    public void setPrice(double price) {
-<span class="fc" id="L63">        this.price = price;</span>
-<span class="fc" id="L64">    }</span>
+public void setPrice(double price) {
+<span class="fc" id="L65">	this.price = price;</span>
+<span class="fc" id="L66">}</span>
 
 /**
  * @return inTime
  */
-    public Date getInTime() {
-<span class="pc bpc" id="L70" title="1 of 2 branches missed.">        return inTime = inTime == null ? null : (Date) inTime.clone();</span>
-    }
+public Date getInTime() {
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">	return inTime = inTime == null ? null : (Date) inTime.clone();</span>
+}
 
 /**
  * @param inTime;
  */
-    public void setInTime(Date inTime) {
-<span class="pc bpc" id="L77" title="1 of 2 branches missed.">        this.inTime = inTime == null ? null : (Date) inTime.clone();</span>
-<span class="fc" id="L78">    }</span>
+public void setInTime(Date inTime) {
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">	this.inTime = inTime == null ? null : (Date) inTime.clone();</span>
+<span class="fc" id="L80">}</span>
 
 /**
  * @return outTime
  */
-    public Date getOutTime() {
-<span class="fc bfc" id="L84" title="All 2 branches covered.">        return outTime = outTime == null ? null : (Date) outTime.clone();</span>
-    }
+public Date getOutTime() {
+<span class="fc bfc" id="L86" title="All 2 branches covered.">	return outTime = outTime == null ? null : (Date) outTime.clone();</span>
+}
 
 /**
  * @param outTime;
  */
-    public void setOutTime(Date outTime) {
-<span class="fc bfc" id="L91" title="All 2 branches covered.">        this.outTime = outTime == null ? null : (Date) outTime.clone();</span>
-<span class="fc" id="L92">    }</span>
+public void setOutTime(Date outTime) {
+<span class="fc bfc" id="L93" title="All 2 branches covered.">	this.outTime = outTime == null ? null : (Date) outTime.clone();</span>
+<span class="fc" id="L94">}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

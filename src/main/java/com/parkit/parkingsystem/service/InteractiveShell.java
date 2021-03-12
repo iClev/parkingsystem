@@ -15,7 +15,6 @@ public class InteractiveShell {
 private static final Logger logger = LogManager.getLogger("InteractiveShell");
 
 private InteractiveShell() {
-
 }
 
 /**
@@ -26,13 +25,13 @@ public static void loadInterface() {
 	logger.info("Welcome to Parking System!");
 	
 	boolean continueApp = true;
-	final InputReaderUtil inputReaderUtil = new InputReaderUtil();
-	final ParkingSpotDAO parkingSpotDAO = new ParkingSpotDAO();
-	final TicketDAO ticketDAO = new TicketDAO();
-	final ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+	InputReaderUtil inputReaderUtil = new InputReaderUtil();
+	ParkingSpotDAO parkingSpotDAO = new ParkingSpotDAO();
+	TicketDAO ticketDAO = new TicketDAO();
+	ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 	while (continueApp) {
 		loadMenu();
-		final int option = inputReaderUtil.readSelection();
+		int option = inputReaderUtil.readSelection();
 		switch (option) {
 			case 1:
 				parkingService.processIncomingVehicle();

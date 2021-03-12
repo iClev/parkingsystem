@@ -2,7 +2,6 @@ package com.parkit.parkingsystem.model;
 
 import java.util.Date;
 
-
 /**
  * Class to contain ticket model and his getter/setter
  *
@@ -20,10 +19,13 @@ public int getId() {
 	return id;
 }
 
-public void setId(final int id) {
+public void setId(int id) {
 	this.id = id;
 }
 
+/**
+ * @return parkingSpot
+ */
 public ParkingSpot getParkingSpot() {
 	return parkingSpot;
 }
@@ -31,7 +33,7 @@ public ParkingSpot getParkingSpot() {
 /**
  * @param parkingSpot;
  */
-public void setParkingSpot(final ParkingSpot parkingSpot) {
+public void setParkingSpot(ParkingSpot parkingSpot) {
 	this.parkingSpot = parkingSpot;
 }
 
@@ -45,7 +47,7 @@ public String getVehicleRegNumber() {
 /**
  * @param vehicleRegNumber;
  */
-public void setVehicleRegNumber(final String vehicleRegNumber) {
+public void setVehicleRegNumber(String vehicleRegNumber) {
 	this.vehicleRegNumber = vehicleRegNumber;
 }
 
@@ -59,7 +61,7 @@ public double getPrice() {
 /**
  * @param price;
  */
-public void setPrice(final double price) {
+public void setPrice(double price) {
 	this.price = price;
 }
 
@@ -73,7 +75,7 @@ public Date getInTime() {
 /**
  * @param inTime;
  */
-public void setInTime(final Date inTime) {
+public void setInTime(Date inTime) {
 	this.inTime = inTime == null ? null : (Date) inTime.clone();
 }
 
@@ -87,7 +89,7 @@ public Date getOutTime() {
 /**
  * @param outTime;
  */
-public void setOutTime(final Date outTime) {
+public void setOutTime(Date outTime) {
 	this.outTime = outTime == null ? null : (Date) outTime.clone();
 }
 }

@@ -6,7 +6,7 @@ package com.parkit.parkingsystem.constants;
  *
  * @author Clévyd
  */
-public class DBConstants {
+public final class DBConstants {
 /**
  * SQL query that is used to search for available parking spots.
  */
